@@ -427,9 +427,9 @@ function calculate() {
   }
   const rate = rates[selectedCurrency];
   const fxAmount = zarAmount / rate;
-  document.getElementById('result-value').textContent = fxAmount.toLocaleString('en-ZA', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  document.getElementById('result-value').textContent = fxAmount.toLocaleString('en-ZA', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
   document.getElementById('result-code').textContent = ' ' + selectedCurrency;
-  document.getElementById('result-sub').textContent = 'R\u00a0' + zarAmount.toLocaleString('en-ZA', { minimumFractionDigits: 0 }) + ' at ' + rate.toFixed(0) + ' ' + PAIRS[selectedCurrency];
+  document.getElementById('result-sub').textContent = 'R\u00a0' + zarAmount.toLocaleString('en-ZA', { minimumFractionDigits: 0 }) + ' at ' + rate.toFixed(2) + ' ' + PAIRS[selectedCurrency];
   document.getElementById('result-section').classList.add('visible');
 }
 
