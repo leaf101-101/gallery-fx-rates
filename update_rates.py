@@ -15,8 +15,9 @@ TARGET_CURRENCIES = {
 }
 
 def get_rates():
-    url = f"https://v6.exchangerate-api.com/v6/{API_KEY}/latest/ZAR"
+    url = "https://v6.exchangerate-api.com/v6/" + API_KEY + "/latest/ZAR"
     data = requests.get(url, timeout=15).json()
+    print("API result:", data.get('result'))
     rates = {}
     today = datetime.now().strftime('%Y-%m-%d')
     for code, pair in TARGET_CURRENCIES.items():
