@@ -429,7 +429,7 @@ function calculate() {
   const fxAmount = zarAmount / rate;
   document.getElementById('result-value').textContent = fxAmount.toLocaleString('en-ZA', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
   document.getElementById('result-code').textContent = ' ' + selectedCurrency;
-  document.getElementById('result-sub').textContent = 'R\u00a0' + zarAmount.toLocaleString('en-ZA', { minimumFractionDigits: 2 }) + ' at ' + rate.toFixed(4) + ' ' + PAIRS[selectedCurrency];
+  document.getElementById('result-sub').textContent = 'R\u00a0' + zarAmount.toLocaleString('en-ZA', { minimumFractionDigits: 0 }) + ' at ' + rate.toFixed(0) + ' ' + PAIRS[selectedCurrency];
   document.getElementById('result-section').classList.add('visible');
 }
 
