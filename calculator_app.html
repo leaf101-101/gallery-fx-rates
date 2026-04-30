@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fine Art Portfolio — Currency Calculator</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1a18;
+    --ink-mid: #4a4a44;
+    --ink-light: #8a8a82;
+    --rule: #d8d8d0;
+    --rule-light: #efefea;
+    --bg: #fafaf7;
+    --surface: #ffffff;
+    --gold: #b8960c;
+    --gold-light: #f5f0e0;
+    --accent: #1a1a18;
+    --radius: 4px;
+  }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Header */
+  .site-header {
+    background: var(--ink);
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    flex-shrink: 0;
+  }
+  .site-header .wordmark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: #ffffff;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .site-header .wordmark span {
+    color: var(--gold);
+  }
+  .header-date {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #888880;
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+
+  /* Main layout */
+  .main {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 48px 24px 64px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 0.5px solid var(--rule);
+    border-radius: var(--radius);
+    width: 100%;
+    max-width: 560px;
+    overflow: hidden;
+  }
+
+  .card-header {
+    padding: 28px 32px 20px;
+    border-bottom: 0.5px solid var(--rule-light);
+  }
+  .card-eyebrow {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 300;
+    color: var(--ink);
+    letter-spacing: 0.5px;
+  }
+
+  .card-body {
+    padding: 28px 32px;
+  }
+
+  /* Rates strip */
+  .rates-updated {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
+    padding: 10px 14px;
+    background: var(--gold-light);
+    border-radius: var(--radius);
+    border: 0.5px solid #e8d8a0;
+  }
+  .rates-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+  .rates-label {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #7a6800;
+    font-weight: 500;
+  }
+
+  /* Form elements */
+  .field-group {
+    margin-bottom: 20px;
+  }
+  label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .input-wrap {
+    position: relative;
+  }
+  .currency-symbol {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--ink-mid);
+    pointer-events: none;
+  }
+  input[type="number"] {
+    width: 100%;
+    height: 48px;
+    padding: 0 14px 0 32px;
+    font-family: 'Jost', sans-serif;
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--ink);
+    background: var(--bg);
+    border: 0.5px solid var(--rule);
+    border-radius: var(--radius);
+    outline: none;
+    transition: border-color 0.2s;
+    -moz-appearance: textfield;
+  }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+  input[type="number"]:focus { border-color: var(--ink); }
+
+  select {
+    width: 100%;
+    height: 48px;
+    padding: 0 36px 0 14px;
+    font-family: 'Jost', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--ink);
+    background: var(--bg);
+    border: 0.5px solid var(--rule);
+    border-radius: var(--radius);
+    outline: none;
+    appearance: none;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a8a82' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+  }
+  select:focus { border-color: var(--ink); }
+
+  /* Divider */
+  .divider {
+    height: 0.5px;
+    background: var(--rule-light);
+    margin: 24px 0;
+  }
+
+  /* Result */
+  .result-section { display: none; }
+  .result-section.visible { display: block; }
+
+  .result-eyebrow {
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+  .result-amount {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 52px;
+    font-weight: 300;
+    color: var(--ink);
+    letter-spacing: -0.5px;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .result-amount .result-currency-code {
+    font-size: 20px;
+    color: var(--ink-mid);
+    font-weight: 300;
+    margin-left: 6px;
+    letter-spacing: 1px;
+  }
+  .result-sub {
+    font-size: 12px;
+    color: var(--ink-light);
+    margin-top: 8px;
+    font-weight: 300;
+  }
+
+  /* Conversion button */
+  .calc-btn {
+    width: 100%;
+    height: 48px;
+    background: var(--ink);
+    color: #ffffff;
+    border: none;
+    border-radius: var(--radius);
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    margin-top: 4px;
+  }
+  .calc-btn:hover { opacity: 0.88; }
+  .calc-btn:active { opacity: 0.75; }
+
+  /* Quick conversion grid */
+  .quick-grid {
+    margin-top: 28px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .quick-btn {
+    background: var(--bg);
+    border: 0.5px solid var(--rule);
+    border-radius: var(--radius);
+    padding: 10px 8px;
+    font-family: 'Jost', sans-serif;
+    font-size: 12px;
+    color: var(--ink-mid);
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.15s, border-color 0.15s;
+    font-weight: 300;
+  }
+  .quick-btn:hover {
+    background: var(--surface);
+    border-color: var(--ink-mid);
+    color: var(--ink);
+  }
+  .quick-btn strong {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 2px;
+    font-weight: 500;
+  }
+
+  /* Currency pills */
+  .currency-tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .currency-tab {
+    padding: 6px 14px;
+    border: 0.5px solid var(--rule);
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: var(--ink-mid);
+    background: var(--bg);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .currency-tab.active, .currency-tab:hover {
+    background: var(--ink);
+    color: #ffffff;
+    border-color: var(--ink);
+  }
+
+  /* Footer */
+  .card-footer {
+    padding: 16px 32px;
+    border-top: 0.5px solid var(--rule-light);
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-note {
+    font-size: 11px;
+    color: var(--ink-light);
+    font-weight: 300;
+  }
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    color: var(--ink-light);
+    font-style: italic;
+  }
+
+  /* Error state */
+  .error-banner {
+    background: #fef2f2;
+    border: 0.5px solid #fca5a5;
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    font-size: 12px;
+    color: #b91c1c;
+    margin-bottom: 16px;
+    display: none;
+  }
+  .error-banner.visible { display: block; }
+
+  @media (max-width: 480px) {
+    .main { padding: 24px 12px 48px; }
+    .card-body { padding: 20px 20px; }
+    .card-header { padding: 20px 20px 16px; }
+    .card-footer { padding: 14px 20px; flex-direction: column; gap: 6px; }
+    .result-amount { font-size: 40px; }
+    .quick-grid { grid-template-columns: repeat(2, 1fr); }
+    .site-header { padding: 0 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wordmark">Fine Art <span>Portfolio</span></div>
+  <div class="header-date" id="header-date"></div>
+</header>
+
+<main class="main">
+  <div class="card">
+    <div class="card-header">
+      <div class="card-eyebrow">Daily Rates</div>
+      <div class="card-title">Currency Calculator</div>
+    </div>
+
+    <div class="card-body">
+
+      <div class="rates-updated">
+        <div class="rates-dot"></div>
+        <div class="rates-label" id="rates-status">Loading today's rates…</div>
+      </div>
+
+      <div class="error-banner" id="error-banner">
+        Could not load live rates. Please refresh or contact head office.
+      </div>
+
+      <!-- Currency selection pills -->
+      <div class="field-group">
+        <label>Select currency</label>
+        <div class="currency-tabs" id="currency-tabs"></div>
+      </div>
+
+      <!-- ZAR Amount -->
+      <div class="field-group">
+        <label>ZAR amount</label>
+        <div class="input-wrap">
+          <span class="currency-symbol">R</span>
+          <input type="number" id="zar-input" placeholder="0" min="0" step="1" />
+        </div>
+      </div>
+
+      <button class="calc-btn" id="calc-btn" onclick="calculate()">Convert</button>
+
+      <!-- Quick amounts -->
+      <div class="quick-grid" id="quick-grid">
+        <button class="quick-btn" onclick="setAmount(1000)"><strong>Quick</strong>R 1 000</button>
+        <button class="quick-btn" onclick="setAmount(5000)"><strong>Quick</strong>R 5 000</button>
+        <button class="quick-btn" onclick="setAmount(10000)"><strong>Quick</strong>R 10 000</button>
+        <button class="quick-btn" onclick="setAmount(25000)"><strong>Quick</strong>R 25 000</button>
+        <button class="quick-btn" onclick="setAmount(50000)"><strong>Quick</strong>R 50 000</button>
+        <button class="quick-btn" onclick="setAmount(100000)"><strong>Quick</strong>R 100 000</button>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Result -->
+      <div class="result-section" id="result-section">
+        <div class="result-eyebrow">Foreign currency amount</div>
+        <div class="result-amount">
+          <span id="result-value">0.00</span><span class="result-currency-code" id="result-code">USD</span>
+        </div>
+        <div class="result-sub" id="result-sub"></div>
+      </div>
+
+    </div>
+
+    <div class="card-footer">
+      <span class="footer-note">Rates valid today only &bull; For gallery use</span>
+      <span class="footer-logo">Fine Art Portfolio</span>
+    </div>
+  </div>
+</main>
+
+<script>
+const CURRENCIES = ['USD', 'EUR', 'GBP', 'AUD', 'CHF'];
+const PAIRS = { USD: 'USD/ZAR', EUR: 'EUR/ZAR', GBP: 'GBP/ZAR', AUD: 'AUD/ZAR', CHF: 'CHF/ZAR' };
+
+let rates = {};
+let selectedCurrency = 'USD';
+
+function formatDate(d) {
+  return d.toLocaleDateString('en-ZA', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+function formatZAR(n) {
+  return 'R\u00a0' + n.toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function formatFX(n, code) {
+  return n.toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 4 });
+}
+
+// Set today's date
+const today = new Date();
+document.getElementById('header-date').textContent = today.toLocaleDateString('en-ZA', { day: 'numeric', month: 'short', year: 'numeric' });
+
+// Build currency tab pills
+function buildTabs() {
+  const wrap = document.getElementById('currency-tabs');
+  wrap.innerHTML = '';
+  CURRENCIES.forEach(code => {
+    const b = document.createElement('button');
+    b.className = 'currency-tab' + (code === selectedCurrency ? ' active' : '');
+    b.textContent = code;
+    b.onclick = () => selectCurrency(code);
+    wrap.appendChild(b);
+  });
+}
+
+function selectCurrency(code) {
+  selectedCurrency = code;
+  buildTabs();
+  const zarVal = parseFloat(document.getElementById('zar-input').value);
+  if (zarVal > 0) calculate();
+  else document.getElementById('result-section').classList.remove('visible');
+}
+
+function setAmount(amount) {
+  document.getElementById('zar-input').value = amount;
+  calculate();
+}
+
+async function loadRates() {
+  // Try to fetch from current_rates.json (generated by the Python script)
+  try {
+    const resp = await fetch('current_rates.json?v=' + Date.now());
+    if (!resp.ok) throw new Error('No rates file');
+    const data = await resp.json();
+
+    CURRENCIES.forEach(code => {
+      if (data[code]) {
+        rates[code] = data[code].gallery_rate;
+      }
+    });
+
+    const dateStr = data[Object.keys(data)[0]]?.date || formatDate(today);
+    document.getElementById('rates-status').textContent = 'Rates current as at ' + dateStr;
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function loadFallbackRates() {
+  // Fallback to last-known rates from the Excel (user should update these)
+  rates = { USD: 16.2837, EUR: 18.9800, GBP: 21.8735, AUD: 11.5350, CHF: 20.3841 };
+  document.getElementById('rates-status').textContent = 'Showing stored rates — refresh for live rates';
+  document.getElementById('error-banner').classList.add('visible');
+}
+
+function calculate() {
+  const zarStr = document.getElementById('zar-input').value;
+  const zarAmount = parseFloat(zarStr);
+
+  if (!zarAmount || zarAmount <= 0 || !rates[selectedCurrency]) {
+    document.getElementById('result-section').classList.remove('visible');
+    return;
+  }
+
+  const rate = rates[selectedCurrency];
+  const fxAmount = zarAmount / rate;
+
+  document.getElementById('result-value').textContent = formatFX(fxAmount, selectedCurrency);
+  document.getElementById('result-code').textContent = ' ' + selectedCurrency;
+  document.getElementById('result-sub').textContent =
+    formatZAR(zarAmount) + ' at ' + rate.toFixed(4) + ' ' + PAIRS[selectedCurrency];
+  document.getElementById('result-section').classList.add('visible');
+}
+
+// Allow Enter key to calculate
+document.getElementById('zar-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') calculate();
+});
+document.getElementById('zar-input').addEventListener('input', () => {
+  const v = parseFloat(document.getElementById('zar-input').value);
+  if (v > 0) calculate();
+});
+
+// Init
+buildTabs();
+loadRates().then(ok => {
+  if (!ok) loadFallbackRates();
+});
+</script>
+</body>
+</html>
