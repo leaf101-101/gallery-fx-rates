@@ -30,7 +30,8 @@ jobs:
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git pull --rebase origin main
           git add current_rates.json
           git diff --staged --quiet || git commit -m "Update rates"
+          git fetch origin main
+          git rebase origin/main
           git push
