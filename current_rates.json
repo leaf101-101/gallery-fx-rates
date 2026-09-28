@@ -1,27 +1,27 @@
 {
   "USD": {
     "pair": "USD/ZAR",
-    "gallery_rate": 15.9869,
-    "date": "2026-09-27"
+    "gallery_rate": 15.9922,
+    "date": "2026-09-28"
   },
   "EUR": {
     "pair": "EUR/ZAR",
-    "gallery_rate": 18.2224,
-    "date": "2026-09-27"
+    "gallery_rate": 18.2156,
+    "date": "2026-09-28"
   },
   "GBP": {
     "pair": "GBP/ZAR",
-    "gallery_rate": 21.18,
-    "date": "2026-09-27"
+    "gallery_rate": 21.1617,
+    "date": "2026-09-28"
   },
   "AUD": {
     "pair": "AUD/ZAR",
-    "gallery_rate": 11.2295,
-    "date": "2026-09-27"
+    "gallery_rate": 11.2257,
+    "date": "2026-09-28"
   },
   "CHF": {
     "pair": "CHF/ZAR",
-    "gallery_rate": 19.2989,
-    "date": "2026-09-27"
+    "gallery_rate": 19.2837,
+    "date": "2026-09-28"
   }
 }
